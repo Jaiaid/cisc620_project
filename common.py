@@ -2,7 +2,7 @@ DATABASE_NAME = "nytaxi"
 DATABASE_CONN_INF_FILEPATH = "db_conn.ini"
 
 DATABASE_SCHEMA_SCRIPT="nytaxi_schema.sql"
-DATABASE_CONSTRAINT_SCRIPT="nytaxi_fk_constraint.sql"
+DATABASE_CONSTRAINT_SCRIPT="nytaxi_fk_constraints.sql"
 
 TRIP_TABLE_NAME = "Trip"
 TAXI_TRIP_TABLE_NAME = "Taxi_Trip"
