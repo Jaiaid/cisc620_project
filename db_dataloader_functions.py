@@ -12,10 +12,10 @@ def resolve_store_and_fwd(strstate):
     return strstate!='N'
 
 def resolve_ratecode_name(ratecodeid):
-    return str(ratecodeid)
+    return str(ratecodeid)+"rate"
 
 def resolve_payment_name(pay_id):
-    return str(pay_id)
+    return str(pay_id)+"payment"
 
 def convert_money_to_millicent(amount):
     return amount * 1e5
@@ -34,6 +34,7 @@ def taxi_trip_vendor_loader(conn):
     # load the data
     # there is no taxi id so assuming each row is from different taxi
     taxi_id = 0
+    print("")
     for filepath in common.DATA_FILEPATH_LIST:
         taxi_data_list = []
         trip_data_list = []
@@ -194,6 +195,7 @@ def taxi_trip_vendor_loader(conn):
 
 # filling multiple table through same function to avoid reading large file multiple times
 def payment_type_rate_loader(conn):
+    global PAYMENT_ID_TO_NAME_DICT, RATECODE_ID_TO_NAME_DICT
     cur = conn.cursor()
     # load the data
 
@@ -203,7 +205,7 @@ def payment_type_rate_loader(conn):
         pay_data_list = []
         pay_detail_data_list = []
         rate_data_list = []
-
+        print("")
         with open(filepath) as f:
             index = 0
     
@@ -230,16 +232,16 @@ def payment_type_rate_loader(conn):
 
                 # now to parse rows and insert
                 paytype_id = int(row[11])
-                payment_name = resolve_payment_name(pay_id)
+                payment_name = resolve_payment_name(paytype_id)
                 ratecodeid = int(row[7])
                 ratename = resolve_ratecode_name(ratecodeid)
-                fare_amount = convert_money_to_millicent(int(row[12]))
-                extra = convert_money_to_millicent(int(row[13]))
-                mtatax = convert_money_to_millicent(int(row[14]))
-                tip = convert_money_to_millicent(int(row[15]))
-                toll = convert_money_to_millicent(int(row[16]))
-                surcharge = convert_money_to_millicent(int(row[17]))
-                total = convert_money_to_millicent(int(row[18]))
+                fare_amount = convert_money_to_millicent(float(row[12]))
+                extra = convert_money_to_millicent(float(row[13]))
+                mtatax = convert_money_to_millicent(float(row[14]))
+                tip = convert_money_to_millicent(float(row[15]))
+                toll = convert_money_to_millicent(float(row[16]))
+                surcharge = convert_money_to_millicent(float(row[17]))
+                total = convert_money_to_millicent(float(row[18]))
                 
                 # try creating data insertion tuples
                 try:
@@ -261,7 +263,7 @@ def payment_type_rate_loader(conn):
                         pay_data_list.append(
                             "(%s, '%s')" % (paytype_id, quote_escape(resolve_payment_name(paytype_id)))
                         )
-                        PAYMENT_ID_TO_NAME_DICT = quote_escape(resolve_payment_name(paytype_id))
+                        PAYMENT_ID_TO_NAME_DICT[paytype_id] = quote_escape(resolve_payment_name(paytype_id))
                 except Exception as e:
                     print("Exception in inserting in Type table ", paytype_id, quote_escape(resolve_payment_name(paytype_id)))
                     print(str(e))
@@ -283,7 +285,7 @@ def payment_type_rate_loader(conn):
                 # commit at each 2e5 batch to keep memory consumption under control
                 if index % 2e5 == 0:
                     try:
-                        cur.execute("INSERT INTO Payment(paymentID, tripID, paymentType, rateCodeID, fareAmount, extra, mtaTax, surcharge, tipAmount, tollsAmount, totalAmoung) VALUES"
+                        cur.execute("INSERT INTO Payment(paymentID, tripID, paymentType, rateCodeID, fareAmount, extra, mtaTax, surcharge, tipAmount, tollsAmount, totalAmount) VALUES"
                         + ",".join(pay_detail_data_list))
                         if len(pay_data_list) > 0:
                             cur.execute("INSERT INTO Type(typeID, paymentName) VALUES" + ",".join(pay_data_list))
@@ -298,7 +300,7 @@ def payment_type_rate_loader(conn):
         # do all the insertion at a time for efficiency reason
         # insert the remaining data
         try:
-            cur.execute("INSERT INTO Payment(paymentID, tripID, paymentType, rateCodeID, fareAmount, extra, mtaTax, surcharge, tipAmount, tollsAmount, totalAmoung) VALUES"
+            cur.execute("INSERT INTO Payment(paymentID, tripID, paymentType, rateCodeID, fareAmount, extra, mtaTax, surcharge, tipAmount, tollsAmount, totalAmount) VALUES"
             + ",".join(pay_detail_data_list))
             if len(pay_data_list) > 0:
                 cur.execute("INSERT INTO Type(typeID, paymentName) VALUES" + ",".join(pay_data_list))
