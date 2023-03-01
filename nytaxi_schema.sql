@@ -48,7 +48,7 @@ CREATE TABLE Payment (
 
 CREATE TABLE Type (
     typeID INT,
-    paymentName INT,
+    paymentName CHAR(16),
     PRIMARY KEY (typeID)
 );
 
