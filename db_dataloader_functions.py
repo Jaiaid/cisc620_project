@@ -18,7 +18,7 @@ def resolve_payment_name(pay_id):
     return str(pay_id)+"payment"
 
 def convert_money_to_millicent(amount):
-    return amount * 1e5
+    return amount * 1e2
 
 # assumption is that there are not too many different vendor name
 VENDOR_ID_TO_NAME_DICT = {}
@@ -235,13 +235,13 @@ def payment_type_rate_loader(conn):
                 payment_name = resolve_payment_name(paytype_id)
                 ratecodeid = int(row[7])
                 ratename = resolve_ratecode_name(ratecodeid)
-                fare_amount = convert_money_to_millicent(float(row[12]))
-                extra = convert_money_to_millicent(float(row[13]))
-                mtatax = convert_money_to_millicent(float(row[14]))
-                tip = convert_money_to_millicent(float(row[15]))
-                toll = convert_money_to_millicent(float(row[16]))
-                surcharge = convert_money_to_millicent(float(row[17]))
-                total = convert_money_to_millicent(float(row[18]))
+                fare_amount = convert_money_to_millicent(float(row[12])) if row[12]!='' else "null"
+                extra = convert_money_to_millicent(float(row[13])) if row[13]!='' else "null"
+                mtatax = convert_money_to_millicent(float(row[14])) if row[14]!='' else "null"
+                tip = convert_money_to_millicent(float(row[15])) if row[15]!='' else "null"
+                toll = convert_money_to_millicent(float(row[16])) if row[16]!='' else "null"
+                surcharge = convert_money_to_millicent(float(row[17])) if row[17]!='' else "null"
+                total = convert_money_to_millicent(float(row[18])) if row[18]!='' else "null"
                 
                 # try creating data insertion tuples
                 try:
@@ -249,8 +249,8 @@ def payment_type_rate_loader(conn):
                     trip_id += 1
                     payment_id = trip_id
                     pay_detail_data_list.append(
-                        "(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)" 
-                        % (payment_id, trip_id, paytype_id, ratecodeid, fare_amount, extra, mtatax, surcharge, tip, toll, total)
+                        "(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)" 
+                        % (trip_id, paytype_id, ratecodeid, fare_amount, extra, mtatax, surcharge, tip, toll, total)
                     )
                 except Exception as e:
                     print("Exception in inserting in Payment table ", trip_id, trip_id, pay_id, ratecodeid, fare_amount, extra, mtatax, surcharge, tip, toll, total)
@@ -285,7 +285,7 @@ def payment_type_rate_loader(conn):
                 # commit at each 2e5 batch to keep memory consumption under control
                 if index % 2e5 == 0:
                     try:
-                        cur.execute("INSERT INTO Payment(paymentID, tripID, paymentType, rateCodeID, fareAmount, extra, mtaTax, surcharge, tipAmount, tollsAmount, totalAmount) VALUES"
+                        cur.execute("INSERT INTO Payment(tripID, paymentType, rateCodeID, fareAmount, extra, mtaTax, surcharge, tipAmount, tollsAmount, totalAmount) VALUES"
                         + ",".join(pay_detail_data_list))
                         if len(pay_data_list) > 0:
                             cur.execute("INSERT INTO Type(typeID, paymentName) VALUES" + ",".join(pay_data_list))
@@ -300,7 +300,7 @@ def payment_type_rate_loader(conn):
         # do all the insertion at a time for efficiency reason
         # insert the remaining data
         try:
-            cur.execute("INSERT INTO Payment(paymentID, tripID, paymentType, rateCodeID, fareAmount, extra, mtaTax, surcharge, tipAmount, tollsAmount, totalAmount) VALUES"
+            cur.execute("INSERT INTO Payment(tripID, paymentType, rateCodeID, fareAmount, extra, mtaTax, surcharge, tipAmount, tollsAmount, totalAmount) VALUES"
             + ",".join(pay_detail_data_list))
             if len(pay_data_list) > 0:
                 cur.execute("INSERT INTO Type(typeID, paymentName) VALUES" + ",".join(pay_data_list))
@@ -315,6 +315,6 @@ def payment_type_rate_loader(conn):
 
 def db_constraint_loader(conn):
     cur = conn.cursor()
-    cur.execute(open(COMMON.DATABASE_CONSTRAINT_SCRIPT).read())
+    cur.execute(open(common.DATABASE_CONSTRAINT_SCRIPT).read())
     conn.commit()
     cur.close()
