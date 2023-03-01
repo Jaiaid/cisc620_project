@@ -1,5 +1,5 @@
 README FILE FOR BIG DATA PROJECT PHASE ONE
-Group 4: Darian Hodzic Jaiaid Mobin, Muskan Mall, Anirudh Narayanan
+Group 4: Darian Hodzic, Jaiaid Mobin, Muskan Mall, Anirudh Narayanan
 
 This assignment utilizes 3 out of the 4 data files from the following link:
 https://www.kaggle.com/datasets/elemento/nyc-yellow-taxi-trip-data?resource=download&select=yellow_tripdata_2016-01.csv
