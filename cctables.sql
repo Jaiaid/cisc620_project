@@ -1,7 +1,7 @@
 -- Method of copying all the data into created tables where the correct data
 -- types and keys/references and schema will be defined after the COPY commands
 
-CREATE TABLE IF NOT EXISTS TemporaryTable (
+CREATE TABLE IF NOT EXISTS Main_Table (
 	vendorID VARCHAR,
 	tpep_pickup_datetime VARCHAR,
 	tpep_dropOff_datetime VARCHAR,
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS TemporaryTable (
 
 
 CREATE TABLE IF NOT EXISTS Taxi (
-	txID SERIAL PRIMARY KEY,
+	txID INTEGER PRIMARY KEY,
 	vendorID VARCHAR,
 	pickupDateTime VARCHAR,
 	dropoffDateTime VARCHAR,
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS Taxi (
 );
 
 CREATE TABLE IF NOT EXISTS Trip (
-	tripID SERIAL PRIMARY KEY,
+	tripID INTEGER PRIMARY KEY,
 	tripDistance VARCHAR,
 	pickupLongitude VARCHAR,
 	pickupLatitude VARCHAR,
@@ -80,14 +80,17 @@ CREATE TABLE IF NOT EXISTS Rate (
 );
 
 
-COPY TemporaryTable FROM '/Users/darian/Desktop/School/RITCS/BigData/grp4/phase1/taxidata/yellow_tripdata_2016-01.csv' 
+COPY Main_Table FROM '/Users/darian/Desktop/School/RITCS/BigData/grp4/phase1_local/taxidata/yellow_tripdata_2016-01.csv' 
 DELIMITER ',' 
 CSV HEADER;
 
-COPY TemporaryTable FROM '/Users/darian/Desktop/School/RITCS/BigData/grp4/phase1/taxidata/yellow_tripdata_2016-02.csv' 
+COPY Main_Table FROM '/Users/darian/Desktop/School/RITCS/BigData/grp4/phase1_local/taxidata/yellow_tripdata_2016-02.csv' 
 DELIMITER ',' 
 CSV HEADER;
 
-COPY TemporaryTable FROM '/Users/darian/Desktop/School/RITCS/BigData/grp4/phase1/taxidata/yellow_tripdata_2016-03.csv' 
+COPY Main_Table FROM '/Users/darian/Desktop/School/RITCS/BigData/grp4/phase1_local/taxidata/yellow_tripdata_2016-03.csv' 
 DELIMITER ',' 
 CSV HEADER;
+
+ALTER TABLE Main_Table
+ADD COLUMN id SERIAL; -- completed in 2 m 14 s 320 ms
