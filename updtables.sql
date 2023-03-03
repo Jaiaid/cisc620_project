@@ -42,13 +42,6 @@ SELECT
   dropoff_latitude
 FROM main_table; -- 34,499,859 rows affected in 30 s 867 ms
 
--- ALTER TABLE vendor ADD PRIMARY KEY (vendorid); -- completed in 5 ms
--- ALTER TABLE payment ADD PRIMARY KEY (paymentid, tripid); -- completed in 4 ms
--- 
--- ALTER TABLE taxi_trip ADD PRIMARY KEY (txid, tripid); -- completed in 4 ms
--- ALTER TABLE type ADD PRIMARY KEY (typeid); -- completed in 4 ms
--- ALTER TABLE rate ADD PRIMARY KEY (ratecodeid); -- completed in 5 ms
-
 INSERT INTO taxi_trip(txid, tripid)
    SELECT taxi.txid, trip.tripid
 FROM taxi JOIN trip ON taxi.txid = trip.tripid;-- 34,499,859 rows affected in 1 m 19 s 52 ms
