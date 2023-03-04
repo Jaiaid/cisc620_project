@@ -28,11 +28,11 @@ def execute_sql_file(sql_file):
 # Edit for the correct path to cctables.sql on your system
 print("RUNNING: cctables.sql")
 time1 = execute_sql_file(
-    '/Users/darian/Desktop/School/RITCS/BigData/grp4/phase1_local/cctables.sql')
-    
+    './cctables.sql')
+
 print("RUNNING: updtables.sql")
 # Edit for the correct path to updtables.sql on your system
 time2 = execute_sql_file(
-    '/Users/darian/Desktop/School/RITCS/BigData/grp4/phase1_local/updtables.sql')
+    './updtables.sql')
 print("Total Time to Load Database: {:.2f}".format(time1 + time2) + " minutes")
 print()
