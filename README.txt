@@ -25,3 +25,5 @@ STEP 2: To load the database and execute queries, run the loader script in termi
 ** Specify the file paths on your local system to the following sql files in `loader.py`: **
 	`cctables.sql`
 	`updtables.sql`
+
+Currently loader.py is written as such that it is assumed that cctables.sql and updatables.sql are in current working directory
