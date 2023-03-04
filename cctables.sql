@@ -97,15 +97,15 @@ CREATE TABLE IF NOT EXISTS Rate (
 
 
 
-COPY Main_Table FROM '/Users/darian/Desktop/School/RITCS/BigData/grp4/phase1_local/taxidata/yellow_tripdata_2016-01.csv' 
+COPY Main_Table FROM '/tmp/yellow_tripdata_2016-01.csv' 
 DELIMITER ',' 
 CSV HEADER;
 
-COPY Main_Table FROM '/Users/darian/Desktop/School/RITCS/BigData/grp4/phase1_local/taxidata/yellow_tripdata_2016-02.csv' 
+COPY Main_Table FROM '/tmp/yellow_tripdata_2016-02.csv' 
 DELIMITER ',' 
 CSV HEADER;
 
-COPY Main_Table FROM '/Users/darian/Desktop/School/RITCS/BigData/grp4/phase1_local/taxidata/yellow_tripdata_2016-03.csv' 
+COPY Main_Table FROM '/tmp/yellow_tripdata_2016-03.csv' 
 DELIMITER ',' 
 CSV HEADER;
 
