@@ -5,9 +5,13 @@ def execute_sql_file(sql_file):
     try:
         start_time = time.time()
         # Establish connection to postgres db
+        # connection is made as postgres user which should be there by default
+        # provide the password for postgres user
+        # or else change both user and password field
         connection = psycopg2.connect(
             host="localhost",
             database="taxi",
+            user="postgres",
             password="password"
         )
         connection.autocommit = True
