@@ -22,6 +22,13 @@ STEP 2: To load the database and execute queries, run the loader script in termi
 
     `python loader.py`
 
+Alternative Step:
+To create database, copy data files to assumed /tmp location, exec queries 
+(it is assumed that the above mentioned csv files are in current working directory) 
+run in terminal:
+    `bash run.sh`
+
+
 ** Specify the file paths on your local system to the following sql files in `loader.py`: **
 	`cctables.sql`
 	`updtables.sql`
