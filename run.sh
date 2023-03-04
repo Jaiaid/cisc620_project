@@ -10,7 +10,7 @@ psql -d template1 -tc "SELECT 1 FROM pg_database WHERE datname = 'taxi'" | grep 
 # where running COPY FROM file cause issue if postgres server do not have permission to the folder
 # even if appropriate permission given
 # run the bash script as such user that user has permission to these files
-cp *.csv /tmp
+cp -u *.csv /tmp
 
 # run the python script
 python3 loader.py
