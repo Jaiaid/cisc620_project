@@ -7,7 +7,8 @@ def execute_sql_file(sql_file):
         # Establish connection to postgres db
         connection = psycopg2.connect(
             host="localhost",
-            database="taxi"
+            database="taxi",
+            password="password"
         )
         connection.autocommit = True
         cursor = connection.cursor()
