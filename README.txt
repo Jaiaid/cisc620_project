@@ -12,6 +12,10 @@ The file `yellow_tripdata_2015-01.csv` was discarded and is not utilized in this
 we are only loading our database with taxi trip data from 2016.
 
 
+Prerequisite:
+* edit the password and user field in loader.py, by default it is using user="postgres", 
+password="password"
+
 STEP 1: Make sure file paths in `cctables.sql` are accurate for each data file.
 	
 	`yellow_tripdata_2016-01.csv`
