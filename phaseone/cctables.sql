@@ -27,20 +27,15 @@ CREATE TABLE IF NOT EXISTS Main_Table (
 
 
 
-CREATE TABLE IF NOT EXISTS Taxi (
-   tripID INTEGER,
-  txID SERIAL,
+CREATE TABLE IF NOT EXISTS VendorTrips (
+  tripID INTEGER,
   vendorID VARCHAR,
   pickupDateTime VARCHAR,
   dropoffDateTime VARCHAR,
   passengerCount VARCHAR,
   storeAndFwd VARCHAR,
-   PRIMARY KEY(txID, tripID)
+  PRIMARY KEY(tripID, vendorID)
 );
-
-
-ALTER TABLE taxi
-   ADD CONSTRAINT u_txid UNIQUE (txID);
 
 
 CREATE TABLE IF NOT EXISTS Trip (
@@ -73,15 +68,6 @@ CREATE TABLE IF NOT EXISTS Vendor (
   vendorID SERIAL PRIMARY KEY,
   vendorName VARCHAR
 );
-
-
-CREATE TABLE IF NOT EXISTS Taxi_Trip(
-  txID INTEGER,
-  tripID INTEGER,
-  PRIMARY KEY (txID, tripID)
-);
-
-
 
 
 CREATE TABLE IF NOT EXISTS Type (

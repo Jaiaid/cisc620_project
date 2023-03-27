@@ -25,9 +25,9 @@ VALUES ('Creative Mobile Technologies'),
     ('VeriFone Inc.'); -- 2 rows affected in 3 ms
 
 
-INSERT INTO Taxi (tripid, vendorID, pickupDateTime, dropOffDateTime, passengerCount, storeAndFwd)
+INSERT INTO VendorTrips (tripid, vendorID, pickupDateTime, dropOffDateTime, passengerCount, storeAndFwd)
 SELECT
-  id,
+ id,
  vendorID,
  tpep_pickup_datetime,
  tpep_dropoff_datetime,
@@ -37,20 +37,15 @@ FROM main_table; -- 34,499,859 rows affected in 1 m 0 s 310 ms
 
 
 -- Add relevant data to trip table
-INSERT INTO Trip (tripid, tripDistance, pickupLongitude, pickupLatitude, dropoffLongitude, dropoffLatitude)
+INSERT INTO Trip (tripID, tripDistance, pickupLongitude, pickupLatitude, dropoffLongitude, dropoffLatitude)
 SELECT
-  id,
+ id,
  trip_distance,
  pickup_longitude,
  pickup_latitude,
  dropoff_longitude,
  dropoff_latitude
 FROM main_table; -- 34,499,859 rows affected in 30 s 867 ms
-
-
-INSERT INTO taxi_trip(txid, tripid)
-  SELECT taxi.txid, trip.tripid
-FROM taxi JOIN trip ON taxi.txid = trip.tripid;-- 34,499,859 rows affected in 1 m 19 s 52 ms
 
 
 INSERT INTO payment(tripID, paymentType, rateCodeID, fareAmount, extra, mtaTax, tipAmount, tollsAmount, surcharge, totalAmount)
@@ -68,7 +63,7 @@ FROM main_table; -- 34,499,859 rows affected in 2 m 1 s 486 ms
 
 
 --  ALTERING TABLE TAXI TO CORRECT DATA TYPES AND ADDING FOREIGN KEYS
-ALTER TABLE Taxi
+ALTER TABLE VendorTrips
 ALTER COLUMN vendorID TYPE INTEGER USING (vendorID::INTEGER),
 ALTER COLUMN pickupDateTime TYPE TIMESTAMP USING (pickupDateTime::TIMESTAMP),
 ALTER COLUMN dropoffDateTime TYPE TIMESTAMP USING (dropoffDateTime::TIMESTAMP),
@@ -78,19 +73,9 @@ ADD CONSTRAINT fk_vendor
 FOREIGN KEY (vendorID)
  REFERENCES Vendor (vendorID)
  ON DELETE CASCADE; -- completed in 1 m 0 s 842 ms
-
-
---  ADDING FOREIGN KEYS TO TAXI_TRIP
-ALTER TABLE Taxi_Trip
-ADD CONSTRAINT fk_taxi
-FOREIGN KEY (txID)
- REFERENCES Taxi (txID)
- ON DELETE CASCADE,
-ADD CONSTRAINT fk_trip
+ADD CONSTRAINT fk_trips
 FOREIGN KEY (tripID)
- REFERENCES Trip (tripID)
- ON DELETE CASCADE;-- completed in 46 s 528 ms
-
+ REFERENCES Payment (tripID)
 
 -- ALLOWS FOREIGN KEY REFERENCE
 ALTER TABLE Payment ADD UNIQUE(tripID); -- completed in 16 s 858 ms
