@@ -1,4 +1,16 @@
-/* How many people are picked up at an NYC airport for New Years Eve */
+/* QUERY 1: What are the most popular drop off locations in NYC? */
+SELECT
+	dropoffLatitude,
+	dropoffLongitude,
+	COUNT(*) AS count
+FROM
+	Trip
+WHERE
+	dropoffLatitude != 0 AND dropoffLongitude != 0
+GROUP BY dropoffLatitude, dropoffLongitude
+ORDER BY count DESC;
+
+/* QUERY 2: How many people are picked up at an NYC airport for New Years Eve */
 SELECT 
     AVG(Trip.pickupLatitude) AS averageApproximatePickupLatitude,
     AVG(Trip.pickupLongitude) AS averageApproximatePickupLongitude,
@@ -18,7 +30,24 @@ WHERE
     )
 GROUP BY ROUND(pickupLatitude,2), ROUND(pickupLongitude, 2)
 ORDER BY count DESC;
-/* Who is the most popular taxi vendor in NYC based off of their maximum profits */
+
+/* QUERY 3: Which pickup locations in NYC had the highest tipping amount on a single trip 
+   where the passenger(s) paid only with Cash and there was more than one passenger in the taxi? */
+   
+SELECT
+	pickupLongitude,
+	pickupLatitude,
+	MAX(tipAmount) AS tips
+FROM
+	Trip
+	JOIN Payment ON (Payment.tripID = Trip.tripID)
+	JOIN VendorTrips ON (VendorTrips.tripID = Trip.tripID)
+WHERE
+	Payment.paymentType = 2 AND passengerCount > 1
+GROUP BY pickupLongitude, pickupLatitude
+ORDER BY tips DESC;
+
+/* QUERY 4: Who is the most popular taxi vendor in NYC based off of their maximum profits */
 
 SELECT 
     vendorData.vendorid AS vendorID,
@@ -38,7 +67,7 @@ INNER JOIN
     Vendor vendorData ON vendorProfitData.vendorid=vendorData.vendorid
 ORDER BY TotalProfit DESC;
 
-/* What is the average number of trips a vendor has per day */
+/* QUERY 5: What is the average number of trips a vendor has per day */
 
 SELECT 
     vendorData.vendorid AS vendorID,
