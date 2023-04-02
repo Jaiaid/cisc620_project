@@ -8,6 +8,7 @@ pathTwo = '/Users/darian/Desktop/School/RITCS/BigData/grp4/phase2_local/query2.s
 pathThree = '/Users/darian/Desktop/School/RITCS/BigData/grp4/phase2_local/query3.sql'
 pathFour = '/Users/darian/Desktop/School/RITCS/BigData/grp4/phase2_local/query4.sql'
 pathFive = '/Users/darian/Desktop/School/RITCS/BigData/grp4/phase2_local/query5.sql'
+indexes = '/Users/darian/Desktop/School/RITCS/BigData/grp4/phase2_local/index.sql'
 
 # Execute sql query
 def execute_sql_file(sql_file_path):
@@ -30,30 +31,42 @@ def execute_sql_file(sql_file_path):
             connection.close()
 
 def main():
+   # Create Indexes 
+   start = time.time()
+   print("RUNNING: index.sql")
+   execute_sql_file(indexes)
+   end = time.time()
+   print(f"Execution time: {(end - start):.2f} seconds")
+
+   # QUERY 1
    start = time.time()
    print("RUNNING: query1.sql")
    execute_sql_file(pathOne)
    end = time.time()
    print(f"Execution time: {(end - start):.2f} seconds")
 
+   # QUERY 2
    start = time.time()
    print("RUNNING: query2.sql")
    execute_sql_file(pathTwo)
    end = time.time()
    print(f"Execution time: {(end - start):.2f} seconds")
 
+   # QUERY 3   
    start = time.time()
    print("RUNNING: query3.sql")
    execute_sql_file(pathThree)
    end = time.time()
    print(f"Execution time: {(end - start):.2f} seconds")
 
+   # QUERY 4
    start = time.time()
    print("RUNNING: query4.sql")
    execute_sql_file(pathFour)
    end = time.time()
    print(f"Execution time: {(end - start):.2f} seconds")
 
+   # QUERY 5
    start = time.time()
    print("RUNNING: query5.sql")
    execute_sql_file(pathFive)
